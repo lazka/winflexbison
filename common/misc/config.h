@@ -1,3 +1,6 @@
+#ifndef _COMMON_CONFIG_H
+#define _COMMON_CONFIG_H
+
 #include <io.h>
 
 #define STDIN_FILENO 0
@@ -47,3 +50,5 @@
 #define S_ISDIR(mode) (mode & _S_IFDIR)
 
 extern char* _stpcpy(char *yydest, const char *yysrc);
+
+#endif /* _COMMON_CONFIG_H */

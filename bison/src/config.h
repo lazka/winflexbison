@@ -1,3 +1,6 @@
+#ifndef _CONFIG_H
+#define _CONFIG_H
+
 #define PACKAGE_BUGREPORT "https://github.com/lexxmark/winflexbison/issues"
 #define VERSION "3.7.4"
 #define PACKAGE_COPYRIGHT_YEAR 2020
@@ -21,3 +24,5 @@ extern FILE* fopen_unixlike(const char* file, const char* mode);
 extern int strverscmp(const char* s1, const char* s2);
 
 extern int obstack_printf(struct obstack* obs, const char* format, ...);
+
+#endif /* _CONFIG_H */
