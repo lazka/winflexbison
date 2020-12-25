@@ -4,23 +4,37 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { msystem: MINGW64, arch: x86_64 },
+          { msystem: MINGW32, arch: i686   }
+        ]
     defaults:
       run:
         shell: msys2 {0}
     steps:
       - uses: actions/checkout@v2
+
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: MINGW64
+          msystem: ${{ matrix.msystem }}
           update: true
           install: >-
-            mingw-w64-x86_64-toolchain
-            mingw-w64-x86_64-cmake
-            mingw-w64-x86_64-ninja
-      - name: CI-Build
+            mingw-w64-${{ matrix.arch }}-toolchain
+            mingw-w64-${{ matrix.arch }}-cmake
+            mingw-w64-${{ matrix.arch }}-ninja
+
+      - name: "Build"
         run: |
           mkdir build
           cd build
           cmake -GNinja ..
           cmake --build . --target package
-          ls
+
+      - name: "Upload binaries"
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.msystem }}-packages
+          path: build/win_flex_bison-*.zip
